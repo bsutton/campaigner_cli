@@ -6,7 +6,7 @@ import 'package:args/args.dart';
 
 // ignore: prefer_relative_imports
 import 'package:dcli/dcli.dart' hide Settings;
-import 'package:campaigner/campaigner.dart';
+import 'package:noojee_campaigner_cli/noojee_campaigner_cli.dart';
 
 import 'package:dcli/src/util/parser.dart';
 
