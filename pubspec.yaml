@@ -1,6 +1,7 @@
 name: noojee_campaigner_cli
 version: 1.0.0
 description: Cli tools for accessing the Noojee api.
+repository: https://github.com/noojee/campaigner_cli
 environment: 
   sdk: '>=2.12.0 <3.0.0'
 dependencies: 
