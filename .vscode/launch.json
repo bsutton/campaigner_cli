@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "name": "Dart (campaign_list.dart)",
+            "type": "dart",
+            "request": "launch",
+            "program": "campaign_list.dart",
+            "args": [
+                "-t=2"
+            ]
+        },
+        {
+            "name": "calls_record_list.dart",
+            "type": "dart",
+            "request": "launch",
+            "program": "calls_record_list.dart",
+            "args": ["-t", "2", "-c", "4", "-d", "47"]
+        }
+        ,
+        {
+            "name": "field_definitions.dart",
+            "type": "dart",
+            "request": "launch",
+            "program": "field_definitions.dart",
+            "args": ["-t", "2"]
+        }
+    ]
+}
