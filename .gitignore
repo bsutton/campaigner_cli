@@ -3,3 +3,4 @@
 .packages
 .dart_tool
 
+.failed_tracker
