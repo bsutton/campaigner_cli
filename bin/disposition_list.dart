@@ -6,7 +6,7 @@ import 'package:args/args.dart';
 
 // ignore: prefer_relative_imports
 import 'package:dcli/dcli.dart' hide Settings;
-import 'settings.dart';
+import 'package:campaigner/campaigner.dart';
 
 import 'package:dcli/src/util/parser.dart';
 
@@ -21,6 +21,7 @@ import 'package:dcli/src/util/parser.dart';
 
 void main(List<String> args) {
   var parser = ArgParser();
+
   parser.addOption('template',
       abbr: 't', help: 'Campaign Template ID', mandatory: true);
 
@@ -45,7 +46,7 @@ void main(List<String> args) {
   var url = settings.url;
 
   var uri = Uri.encodeFull(
-      '$url/servicemanager/rest/CampaignAPI/getCampaignList?apiKey=$apiKey&fTemplateId=$templateId');
+      '$url/servicemanager/rest/CampaignAPI/getDispositionList?apiKey=$apiKey&fTemplateId=$templateId');
 
   withTempFile((jsonFile) {
     fetch(url: uri, saveToPath: jsonFile);
@@ -60,7 +61,8 @@ void main(List<String> args) {
 
 /// Show useage.
 void showUsage(ArgParser parser) {
-  print('Usage: campaign_list.dart -t <templateid>');
+  print('Usage: disposition_list.dart -t <templateid>');
+  print('Retrieves a list of dispositions for the passed campaign template.');
   print(parser.usage);
   exit(1);
 }
