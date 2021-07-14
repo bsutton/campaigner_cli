@@ -1,5 +1,5 @@
 name: noojee_campaigner_cli
-version: 0.0.1
+version: 1.0.0
 description: Cli tools for accessing the Noojee api.
 environment: 
   sdk: '>=2.12.0 <3.0.0'
@@ -8,20 +8,15 @@ dependencies:
   dcli: ^1.0.0
   path: ^1.8.0
   settings_yaml: ^3.0.0
-
 dev_dependencies: 
   pedantic: ^1.0.0
-
-executables:
-  allocation_list:
-  calls_record_list:
-  campaign_list:
-  create_call_record:
-  disposition_list:
-  field_definitions:
-  inject:
-  sendsms:
-  template_list:
-
-  
-
+executables: 
+  allocation_list: 
+  calls_record_list: 
+  campaign_list: 
+  create_call_record: 
+  disposition_list: 
+  field_definitions: 
+  inject: 
+  sendsms: 
+  template_list: 
