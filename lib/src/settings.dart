@@ -24,7 +24,7 @@ class Settings {
   String fetch(SettingsYaml yaml, String name) {
     var value = yaml[name] as String?;
     if (value == null) {
-      printerr('Your .settings.yaml is missing a value for $name');
+      printerr('Your ${truepath(yaml.filePath)} is missing a value for $name');
       exit(1);
     }
     return value;
