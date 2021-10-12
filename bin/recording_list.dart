@@ -1,12 +1,12 @@
 #! /usr/bin/env dcli
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:intl/intl.dart';
 
 import 'package:dcli/dcli.dart' hide Settings;
-import 'package:dcli/src/util/parser.dart';
 
 import 'package:noojee_campaigner_cli/noojee_campaigner_cli.dart';
 
@@ -70,16 +70,22 @@ void main(List<String> args) {
       '$url/njadmin/rest/RecordingAPI/retrieveMetaDataByHour?apiKey=$apiKey&date=$dateArg&hour=$hour');
 
   withTempFile((jsonFile) {
-    fetch(url: uri, saveToPath: jsonFile, method: Fetch.post);
-    var lines = read(jsonFile).toList();
-    final list = Parser(lines).jsonDecode() as List<dynamic>;
+    try {
+      fetch(url: uri, saveToPath: jsonFile, method: FetchMethod.post);
+    } on FetchException catch (e) {
+      print('Download failed: ${e.message}');
+      print(read(jsonFile).toParagraph());
+      exit(1);
+    }
+    var response = read(jsonFile).toParagraph();
+    final legs = jsonDecode(response) as List<dynamic>;
 
-    if (list.isEmpty) {
+    if (legs.isEmpty) {
       print(orange('No recordings found for date: $dateArg hour: $hour'));
     }
-    for (var legs in list) {
+    for (var leg in legs) {
       print(
-          'UniqueId: ${legs['UniqueId']} Start: "${legs['Start']}" Duration: "${legs['Duration']}" Source: "${legs['Source']}" Destination: "${legs['Destination']}"');
+          'UniqueId: ${leg['UniqueId']} Start: "${leg['Start']}" Duration: "${leg['Duration']}" Source: "${leg['Source']}" Destination: "${leg['Destination']}"');
     }
   }, create: false);
 }
