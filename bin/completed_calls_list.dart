@@ -26,7 +26,7 @@ void main(List<String> args) {
 
   parser.addMultiOption('dispositions',
       abbr: 'd',
-      help: 'A comma separated list of dispositions',
+      help: 'A comma separated list of disposition ids',
       valueHelp: 'disposition');
 
   ArgResults parsed;
@@ -69,7 +69,7 @@ void main(List<String> args) {
   }
 
   if (dispositions.isEmpty) {
-    printerr(red('You must pass at least one disposition'));
+    printerr(red('You must pass at least one disposition id'));
     showUsage(parser);
     exit(1);
   }
@@ -98,6 +98,12 @@ void main(List<String> args) {
     fetch(url: uri, saveToPath: jsonFile);
     var lines = read(jsonFile).toList();
     final jsonMap = Parser(lines).jsonDecode() as Map<String, dynamic>;
+
+    final code = jsonMap['code'] as int;
+    if (code != 0) {
+      printerr(red(jsonMap['message'] as String));
+      exit(1);
+    }
 
     // get list of call records
     var records = jsonMap['entities'] as List;
