@@ -73,7 +73,7 @@ void main(List<String> args) {
       """curl -v -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '$fields' '$uri'""";
 
   // print(curl.replaceAll('\n', ''));
-  curl.start(progress: Progress.devNull());
+  curl.start(progress: Progress.print());
 }
 
 /// Show useage.
