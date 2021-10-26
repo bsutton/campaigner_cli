@@ -53,6 +53,12 @@ void main(List<String> args) {
     var lines = read(jsonFile).toList();
     final jsonMap = Parser(lines).jsonDecode() as Map<String, dynamic>;
 
+    final code = jsonMap['code'] as int;
+    if (code != 0) {
+      printerr(red(jsonMap['message'] as String));
+      exit(1);
+    }
+
     for (var entity in jsonMap['entities']) {
       print('id: ${entity['id']} name: "${entity['name']}"');
     }

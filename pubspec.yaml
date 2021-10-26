@@ -23,6 +23,6 @@ executables:
   sendsms: 
   template_list: 
 
-# dependency_overrides:
-#   dcli:
-#     path: ../dcli
+dependency_overrides:
+  dcli:
+    path: ../dcli

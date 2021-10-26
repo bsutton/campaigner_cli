@@ -21,8 +21,7 @@ import 'package:noojee_campaigner_cli/noojee_campaigner_cli.dart';
 
 void main(List<String> args) {
   var parser = ArgParser();
-  parser.addOption('template',
-      abbr: 't', help: 'Campaign Template ID', mandatory: true);
+
   parser.addOption('campaign', abbr: 'c', help: 'Campaign ID', mandatory: true);
 
   ArgResults parsed;
@@ -35,12 +34,6 @@ void main(List<String> args) {
     exit(1);
   }
 
-  var templateId = int.tryParse(parsed['template'] as String);
-  if (templateId == null) {
-    printerr(red('The template must be an integer'));
-    showUsage(parser);
-  }
-
   var campaignId = int.tryParse(parsed['campaign'] as String);
   if (campaignId == null) {
     printerr(red('The campaign must be an integer'));
@@ -51,12 +44,20 @@ void main(List<String> args) {
   var apiKey = settings.apiKey;
   var url = settings.url;
   var uri = Uri.encodeFull(
-      '$url/servicemanager/rest/CampaignAPI/getAllocationList?apiKey=$apiKey&fTemplateId=$templateId&fCampaignId=$campaignId');
+      '$url/servicemanager/rest/CampaignAPI/getAllocationList?apiKey=$apiKey&fCampaignId=$campaignId');
 
   withTempFile((jsonFile) {
     fetch(url: uri, saveToPath: jsonFile);
+    print(read(jsonFile).toParagraph());
     var lines = read(jsonFile).toList();
     final jsonMap = Parser(lines).jsonDecode() as Map<String, dynamic>;
+
+    final code = jsonMap['code'] as int;
+    if (code != 0) {
+      printerr(red(jsonMap['message'] as String));
+      exit(1);
+    }
+
 
     for (var entity in jsonMap['entities']) {
       print('id: ${entity['id']} name: "${entity['name']}"');
@@ -66,7 +67,7 @@ void main(List<String> args) {
 
 /// Show useage.
 void showUsage(ArgParser parser) {
-  print('Usage: allocation_list.dart -t <templateid> -c <campaignid>');
+  print('Usage: allocation_list.dart -c <campaignid>');
   print(parser.usage);
   exit(1);
 }

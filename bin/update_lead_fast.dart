@@ -51,37 +51,31 @@ void main(List<String> args) {
       defaultOption: 'Sliding');
 
   final settings = Settings.load();
-  var templateid = ask('template:', defaultValue: '16');
-  var campaignId = ask('campaign:', defaultValue: '17');
-  var allocationid = ask('allocation:', defaultValue: '30');
-  var apiKey = settings.apiKey;
   var url = settings.url;
+  // """curl --location -g --request GET 'https://api.transmitsms.com/send-sms.json?message=Hi {$name},$message&reply_callback=https://www.myserver.com/processreply.php?myparameter=myvalue&to=1234567890'"""
+  //     .run;
+  var templateid = ask('template:', defaultValue: '72');
+  var campaignId = ask('campaign:', defaultValue: '128');
+  var allocationid = ask('allocation:', defaultValue: '113');
+  var apiKey = settings.apiKey;
   var uri = Uri.encodeFull(
-          '''$url/servicemanager/rest/CampaignAPI/insertLeadFast?apiKey=$apiKey&fTemplateId=$templateid&fCampaignId=$campaignId&fAllocationId=$allocationid&apiKey=$apiKey&allowDuplicates=true''')
+          '''$url/servicemanager/rest/CampaignAPI/updateLeadFast?apiKey=$apiKey&fTemplateId=$templateid&fCampaignId=$campaignId&fAllocationId=$allocationid&apiKey=$apiKey''')
       .replaceAll('\n', '');
 
   ///print(uri);
 
   final fields =
-      '{"Mobile":"$mobile", "Name":"$name","StreetAddress":"$streetAddress", "Suburb": "$suburb", "State":"$state", "PostCode":"$postCode", "WindowType":"$window", "message":"$message"}';
+      '{"njLeadId":"111688", "njDisposition":"Fax", "Mobile":"$mobile", "Name":"$name","StreetAddress":"$streetAddress"'
+      ', "Suburb": "$suburb", "State":"$state", "PostCode":"$postCode", "WindowType":"$window", "message":"$message"}';
 
-  withTempFile((tmp) {
-    try {
-      fetch(
-          url: uri,
-          saveToPath: tmp,
-          method: FetchMethod.post,
-          headers: {
-            'Accept': 'application/json',
-          },
-          data: FetchData.fromString(fields, mimeType: 'application/json'));
-    } on FetchException catch (e) {
-      print('Exception Thrown: ${e.errorCode} ${e.message}');
-    }
-    if (exists(tmp)) {
-      print(read(tmp).toParagraph());
-    }
-  }, create: false);
+  // final fields2 =
+  //     '{"Name":"$name","StreetAddress":"$streetAddress", "City": "$suburb", "State":"$state", "PostCode":"$postCode", "Mobile":"$mobile", "message":"$message"}';
+
+  final curl =
+      """curl -v -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '$fields' '$uri'""";
+
+  // print(curl.replaceAll('\n', ''));
+  curl.start(progress: Progress.print());
 }
 
 /// Show useage.
